@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 /**
  * Given a Binary Tree (BT), convert it to a Doubly Linked List(DLL)
+ * <p>
+ * Test case: 1 4 10 20 L 10 30 R 20 40 L 20 60 R
  */
 public class BinaryTreeToDll {
 
@@ -19,8 +21,9 @@ public class BinaryTreeToDll {
 
             Node dll = convertToDoubleLinkedList(node);
 
-            while (dll.getRight() != null) {
+            while (dll != null) {
                 System.out.print(" " + dll.getData());
+                dll = dll.getRight();
             }
 
             System.out.println("\n");
@@ -61,19 +64,34 @@ public class BinaryTreeToDll {
         return firstNode;
     }
 
-    public static Node convertToDoubleLinkedList(Node node) {
-        Node newNode = new Node(node.getData());
-        if (node.getLeft() != null) {
-            newNode.setLeft(node);
-            convertToDoubleLinkedList(node.getLeft());
+    public static Node convertToDoubleLinkedList(Node rootNode) {
+        Node leftNode = null;
+        Node centralNode = null;
+        Node rightNode = null;
+
+        //add the central node
+        centralNode = new Node(rootNode.getData());
+
+        //add the left node
+        if (rootNode.getLeft() != null) {
+            leftNode = new Node();
+            leftNode.setData(centralNode.getLeft().getData());
+            leftNode.setRight(centralNode);
+            centralNode.setLeft(leftNode);
+            convertToDoubleLinkedList(rootNode.getLeft());
         }
 
-        if (node.getRight() != null) {
-            newNode.setRight(node);
-            convertToDoubleLinkedList(node.getRight());
+        //add the right node
+        if (rootNode.getRight() != null) {
+            rightNode = new Node();
+            rightNode.setData(rootNode.getRight().getData());
+            rightNode.setLeft(rootNode);
+            centralNode.setRight(rightNode);
+            convertToDoubleLinkedList(rootNode.getRight());
         }
 
-        return newNode;
+        //return the leftmost node
+        return leftNode;
     }
 
     public static Node getOuterLeft(Node tree) {
