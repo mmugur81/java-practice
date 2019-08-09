@@ -12,7 +12,19 @@ public class BinaryTreeToDll {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        int testCases = scanner.nextInt();
+        for (int i = 0; i < testCases; i++) {
+            int nNodes = scanner.nextInt();
+            Node node = readTree(nNodes);
 
+            Node dll = convertToDoubleLinkedList(node);
+
+            while (dll.getRight() != null) {
+                System.out.print(" " + dll.getData());
+            }
+
+            System.out.println("\n");
+        }
     }
 
     /**
@@ -21,13 +33,56 @@ public class BinaryTreeToDll {
      * @param nNodes no of nodes to read
      * @return the tree (root node)
      */
-    public static Node readNode(int nNodes) {
+    public static Node readTree(int nNodes) {
         Map<Integer, Node> nodeMap = new HashMap<>();
+        Node firstNode = null;
 
-        Node node = new Node();
+        for (int i = 0; i < nNodes; i++) {
+            int first = scanner.nextInt();
+            int second = scanner.nextInt();
+            boolean isLeft = scanner.next().equals("L");
 
-        //todo continue
-        return null;
+            nodeMap.putIfAbsent(first, new Node(first));
+            Node node = nodeMap.get(first);
+
+            if (i == 0) {
+                firstNode = node;
+            }
+
+            Node secondNode = new Node(second);
+            nodeMap.put(second, secondNode);
+            if (isLeft) {
+                node.setLeft(secondNode);
+            } else {
+                node.setRight(secondNode);
+            }
+        }
+
+        return firstNode;
+    }
+
+    public static Node convertToDoubleLinkedList(Node node) {
+        Node newNode = new Node(node.getData());
+        if (node.getLeft() != null) {
+            newNode.setLeft(node);
+            convertToDoubleLinkedList(node.getLeft());
+        }
+
+        if (node.getRight() != null) {
+            newNode.setRight(node);
+            convertToDoubleLinkedList(node.getRight());
+        }
+
+        return newNode;
+    }
+
+    public static Node getOuterLeft(Node tree) {
+        Node node = tree;
+        while (node.getLeft() != null) {
+            node = node.getLeft();
+        }
+
+        return node;
     }
 
     public static class Node {
