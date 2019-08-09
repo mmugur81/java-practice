@@ -25,17 +25,17 @@ public class BinaryTreeToDll {
             // Left view print - and also setting the left link
             Node lastNode = null;
             while (nodeList != null) {
-                nodeList.setLeft(lastNode);
+                nodeList.left = lastNode;
                 lastNode = nodeList;
-                System.out.print(" " + nodeList.getData());
-                nodeList = nodeList.getRight();
+                System.out.print(" " + nodeList.data);
+                nodeList = nodeList.right;
             }
             System.out.println("");
 
             // Right view print
             while (lastNode != null) {
-                System.out.print(" " + lastNode.getData());
-                lastNode = lastNode.getLeft();
+                System.out.print(" " + lastNode.data);
+                lastNode = lastNode.left;
             }
             System.out.println("\n");
         }
@@ -66,9 +66,9 @@ public class BinaryTreeToDll {
             Node secondNode = new Node(second);
             nodeMap.put(second, secondNode);
             if (isLeft) {
-                node.setLeft(secondNode);
+                node.left = secondNode;
             } else {
-                node.setRight(secondNode);
+                node.right = secondNode;
             }
         }
 
@@ -81,49 +81,47 @@ public class BinaryTreeToDll {
         Node rightNode = null;
 
         //add the central node
-        centralNode = new Node(rootNode.getData());
+        centralNode = new Node(rootNode.data);
 
         //add the left node
-        if (rootNode.getLeft() != null) {
+        if (rootNode.left != null) {
 
             // Check left side in depth
-            Node leftTree = convertToDoubleLinkedList(rootNode.getLeft());
+            Node leftTree = convertToDoubleLinkedList(rootNode.left);
             if (leftTree != null) {
                 // replace leftNode with leftTree
                 leftNode = leftTree;
 
                 //set the correct right link for the last element from leftTree
                 Node lastNode = leftNode;
-                while (lastNode.getRight() != null) {
-                    lastNode = lastNode.getRight();
+                while (lastNode.right != null) {
+                    lastNode = lastNode.right;
                 }
-                lastNode.setRight(centralNode);
+                lastNode.right = centralNode;
 
             } else {
                 // leftNode does not have more levels on left side, so it's alone
-                leftNode = new Node();
-                leftNode.setData(rootNode.getLeft().getData());
-                leftNode.setRight(centralNode);
+                leftNode = new Node(rootNode.left.data);
+                leftNode.right = centralNode;
             }
             //left side will be set after the first traversal from left to right
         }
 
         //add the right node
-        if (rootNode.getRight() != null) {
+        if (rootNode.right != null) {
 
             // check right side in depth
-            Node rightTree = convertToDoubleLinkedList(rootNode.getRight());
+            Node rightTree = convertToDoubleLinkedList(rootNode.right);
             if (rightTree != null) {
                 //replace rightNode with rightTree
                 rightNode = rightTree;
             } else {
                 // rightNode does not have more levels on right side, so it's alone
-                rightNode = new Node();
-                rightNode.setData(rootNode.getRight().getData());
+                rightNode = new Node(rootNode.right.data);
 
             }
             //left side will be set after the first traversal from left to right
-            centralNode.setRight(rightNode);
+            centralNode.right = rightNode;
         }
 
         //return the leftmost node
@@ -131,40 +129,13 @@ public class BinaryTreeToDll {
     }
 
     public static class Node {
-        private Node left;
-        private Node right;
-        private Integer data;
+        Node left;
+        Node right;
+        int data;
 
-        public Node(Integer data) {
-            this.data = data;
-        }
-
-        public Node() {
-
-        }
-
-        public Node getLeft() {
-            return left;
-        }
-
-        public void setLeft(Node left) {
-            this.left = left;
-        }
-
-        public Node getRight() {
-            return right;
-        }
-
-        public void setRight(Node right) {
-            this.right = right;
-        }
-
-        public Integer getData() {
-            return data;
-        }
-
-        public void setData(Integer data) {
-            this.data = data;
+        Node(int d) {
+            data = d;
+            left = right = null;
         }
     }
 }
