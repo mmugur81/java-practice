@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 /**
  * Given a Binary Tree (BT), convert it to a Doubly Linked List(DLL)
+ * Test case: 1 4 10 20 L 10 30 R 20 40 L 20 60 R
  */
 public class BinaryTreeToDll {
 
